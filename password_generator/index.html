@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="min-h-screen py-8 px4 bg-linear-to-r from-gray-100 to-gray-200 transition-colors duration-300">
+    <div class="app-container mx-auto pt-8">
+        <h1 class="text-3xl font-bold text-center mb-2 text-gray-800">Генератор паролей</h1>
+        <p class="text-center text-gray-600 mb-8">Создавайте надежные и уникальные пароли для повышения безопасности</p>
+
+        <div class="generator-card rounded-xl overflow-hidden">
+            <!-- Main Generator Section -->
+            <div class="p-6">
+
+                <!-- Password Display -->
+                <div class="flex flex-col mb-6">
+                    <label for="password-output" class="text-sm font-medium text-gray-700 mb-2">Ваш пароль</label>
+                    <div class="relative">
+                        <input type="text" id="password-output" class="password-display w-full py-3 px-4 lext-lg font-medium text-gray-800 border border-gray-300 rounded-lg" readonly>
+                        <div class="absolute right-2 top-1/2 transform -translate-y-1/2 flex space-x-2">
+                            <button id="refresh-btn" class="p-2 text-gray-500 hover:text-indigo-600 focus:outline-none">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                </svg>
+                            </button>
+                            <button id="copy-btn" class="p-2 text-gray-500 hover:text-indigo-600 focus:outline-none">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Password Strength Indicator -->
+                <div class="mb-6">
+                    <div class="flex justify-between items-center mb-1">
+                        <label class="text-sm font-medium text-gray-700">Надежность пароля</label>
+                        <span id="strength-text" class="strength-text text-sm">-</span>
+                    </div>
+                    <div id="strength-meter" class="strength-meter"></div>
+                    <div class="flex justify-between text-xs text-gray-500 mt-1">
+                        <span>Слабый</span>
+                        <span>Средний</span>
+                        <span>Надежный</span>
+                        <span>Очень надежный</span>
+                    </div>
+                </div>
+
+                <!-- Length Setting -->
+                <div class="mb-6">
+                    <div class="flex justify-between items-center mb-2">
+                        <label for="length-slider" class="text-sm font-medium text-gray-700">Длина пароля</label>
+                        <span id="length-value" class="text-sm font-semibold text-indigo-600">12</span>
+                    </div>
+                    <input type="range" id="length-slider" class="slider w-full" min="4" max="64" value="12">
+                </div>
+
+                <!-- Password Options -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <div class="flex items-center">
+                        <input type="checkbox" id="include-uppercase" class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500" checked>
+                        <label for="include-uppercase" class="ml-2 text-sm text-gray-700">Заглавные буквы (A-Z)</label>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="checkbox" id="include-lowercase" class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500" checked>
+                        <label for="include-lowercase" class="ml-2 text-sm text-gray-700">Строчные буквы (a-z)</label>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="checkbox" id="include-numbers" class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                        <label for="include-numbers" class="ml-2 text-sm text-gray-700">Цифры (0-9)</label>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="checkbox" id="include-symbols" class="w-4 h-4 text-indigo-600 border-gray-300 rounded fucus:ring-indigo-500">
+                        <label for="include-symbols" class="ml-2 text-sm text-gray-700">Специальные символы (!@#$%)</label>
+                    </div>
+                </div>
+
+                <!-- Advanced Settings Toggle -->
+                <div class="settings-toggle flex items-center justify-between p-3 rounded-lg bg-gray-50 mb-4" id="advanced-settings-toggle">
+                    <div class="flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600 dark:text-gray-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        <span class="text-sm font-medium text-gray-700">Дополнительные настройки</span>
+                    </div>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 dark:text-gray-400 transform transition-transform" id="toggle-arrow" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </div>
+
+                <!-- Advanced Settings Panel -->
+                <div class="settings-panel mb-6" id="advanced-settings">
+                    <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                            <div class="flex items-center">
+                                <input type="checkbox" id="exclude-similar" class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                                <label for="exclude-similar" class="ml-2 text-sm text-gray-700">Исключить похожие символы (i, l, 1, L, o, 0, O)</label>
+                            </div>
+                            
+                            <div class="flex items-center">
+                                <input type="checkbox" id="exclude-ambiguous" class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                                <label for="exclude-ambiguous" class="ml-2 text-sm text-gray-700">Исключить неоднозначные символы ({ } [ ] ( ) / \ ' " ` ~ , ; : . < >)</label>
+                            </div>
+
+                            <div class="flex items-center">
+                                <input type="checkbox" id="avoid-duplicates" class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                                <label for="avoid-duplicates" class="ml-2 text-sm text-gray-700">Избегать повторяющихся символов</label>
+                            </div>
+
+                            <div class="flex items-center">
+                                <input type="checkbox" id="require-every-type" class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500" checked>
+                                <label for="require-every-type" class="ml-2 text-sm text-gray-700">Требовать символ каждого выбранного типа</label>
+                            </div>
+
+                        </div>
+
+                        <div class="mt-4">
+                            <label for="custom-chars" class="block text-sm font-medium text-gray-700 mb-1">Пользовательский набор символов</label>
+                            <input type="text" id="custom-chars" class="w-full p-2 text-sm text-gray-800 border border-gray-300 rounded" placeholder="Например: !@#$%^&*">
+                            <p class="text-xs text-gray-500 mt-1">Оставьте пустым, чтобы использовать стандартный набор символов</p>
+                        </div>
+                    </div>
+
+                    <!-- Password Type Tabs -->
+                    <div class="mt-4 mb-2">
+                        <div class="flex border-b border-gray-200 overflow-x-auto">
+                            <button id="random-tab" class="tab py-2 px-4 text-sm font-medium text-indigo-600 border-b-2 border-indigo-500 active">Случайный пароль</button>
+                            <button id="memorable-tab" class="tab py-2 px-4 text-sm font-medium text-gray-500 hover:text-gray-700">Запоминающийся пароль</button>
+                            <button id="pin-tab" class="tab py-2 px-4 text-sm font-medium text-gray-500 hover:text-gray-700">PIN-код</button>
+                            <button id="pattern-tab" class="tab py-2 px-4 text-sm font-medium text-gray-500 hover:text-gray-700">По шаблону</button>
+                        </div>
+
+                        <!-- Type-specific options (initialy hidden) -->
+                        <div id="memorable-options" class="tab-panel hidden mt-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label for="num-words" class="block text-sm font-medium text-gray-700 mb-1">Количество слов</label>
+                                    <select class="w-full p-2 text-sm text-gray-800 border border-gray-300 rounded" id="num-words">
+                                        <option value="3">3</option>
+                                        <option value="4" selected>4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="word-separator" class="block text-sm font-medium text-gray-700 mb-1">Разделитель</label>
+                                    <select class="w-full p-2 text-sm texg-gray-800 border border-gray-300 rounded" id="word-separator">
+                                        <option value="-">Дефис (-)</option>
+                                        <option value=".">Точка (.)</option>
+                                        <option value="_">Подчеркивание (_)</option>
+                                        <option value=" ">Пробел</option>
+                                        <option value="">Нет</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mt-3">
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="capitalize-words" class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500" checked>
+                                    <label for="capitalize-word" class="ml-2 text-sm text-gray-700">Начинать слова с заглавной буквы</label>
+                                </div>
+                                <div class="flex items-center mt-2">
+                                    <input type="checkbox" id="add-number" class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500" checked>
+                                    <label for="add-number" class="ml-2 text-sm text-gray-700">Добавить цифры</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="pin-options" class="tab-panel hidden mt-4">
+                            <div>
+                                <label for="pin-length" class="block text-sm font-medium text-gray-700 mb-1">Длина PIN-кода</label>
+                                <select class="w-full p-2 text-sm text-gray-800 border border-gray-300 rounded" id="pin-length">
+                                    <option value="4">4 цифры</option>
+                                    <option value="6">6 цифр</option>
+                                    <option value="8">8 цифр</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div id="pattern-options" class="tab-panel hidden mt-4">
+                            <label for="pattern-input" class="block text-sm font-medium text-gray-700 mb-1">Шаблон пароля</label>
+                            <input type="text" id="pattern-input" class="w-full p-2 text-sm text-gray-800 border border-gray-300" placeholder="Например: AxBnC@D#" value="AxnS">
+                            <p class="text-xs text-gray-500 mt-1">A = заглавная буква, x = строчная буква, n = цифра, S = спецсимвол, @ = любой символ</p>
+                        </div>
+                        
+                    </div>
+                </div>
+                
+                <!-- Generate Button -->
+                <button id="generate-btn" class="btn-primary w-full py-3 rounded-lg text-white font-semibold shadow-lg">Сгенерировать пароль</button>
+
+            </div>
+
+            <!-- Password History Section -->
+            <div class="border-t border-gray-200 px-6 py-4">
+                <h3 class="font-medium text-gray-700 mb-2">История паролей</h3>
+                <div id="history-container" class="max-h-48 overflow-y-auto">
+                    <!-- Password history items will be dinamically added here -->
+                    <div class="text-center text-gray-500 py-4">История пуста</div>
+                </div>
+            </div>
+
+            <!-- Tips Section -->
+            <div class="border-t border-gray-200 bg-gray px-6 py-4">
+                <h3 class="font-medium text-gray-700 mb-2">Советы по безопасности</h3>
+                <ul class="text-sm text-gray-600 space-y-1">
+                    <li class="flex items-start">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                        </svg>
+                        Используйте уникальные пароли для каждой учетной записи
+                    </li>
+                    <li class="flex items-start">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                        </svg>
+                        Длина пароля важнее, чем его сложность — используйте пароли длиной не менее 12 символов
+                    </li>
+                    <li class="flex items-start">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                        </svg>
+                        Включите двухфакторную аутентификацию (2FA) везде, где это возможно
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+
+        <p class="text-center text-gray-500 text-sm mt-6">Генератор паролей 2025 © Все пароли генерируются локально в вашем браузере и нигде не сохраняются.</p>
+    </div>
+
+    <!-- Copy notification -->
+    <div id="copy-notification" class="copy-notification flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+        </svg>
+        <span>Пароль скопирован!</span>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

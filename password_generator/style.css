@@ -1,0 +1,209 @@
+:root {
+    --primary-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #d946ef 100%);
+    --strength-weak: #ef4444;
+    --strength-medium: #f59e0b;
+    --strength-strong: #10b981;
+    --strength-very-strong: #059669;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f3f4f6;
+}
+
+.app-container {
+    max-width: 800px;
+}
+
+.generator-card {
+    backdrop-filter: blur(16px);
+    background-color: rgba(255, 255, 255, 0.85);
+    box-shadow:
+        0 10px 15px -3px rgba(0,0,0,0.1),
+        0 4px 6px -2px rgba(0,0,0,0.05),
+        0 0 0 1px rgba(0,0,0,0.05)
+}
+
+.password-display {
+    font-family: 'Courier Prime', monospace;
+    letter-spacing: 0.05em;
+    background-color: #f9fafb;
+    overflow-x: auto;
+    white-space: nowrap;
+    position: relative;
+}
+
+.password-display::-webkit-scrollbar {
+    height: 4px;
+}
+
+.password-display::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.password-display::-webkit-scrollbar-thumb {
+    background: #c5c5c5;
+    border-radius: 10px;
+}
+
+.password-display::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+.btn-primary {
+    background: var(--primary-gradient);
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px -5px rgba(99, 102, 241, 0.4);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.btn-outline {
+    border: 1px solid #e5e7eb;
+    transition: all 0.2s ease;
+}
+
+.btn-outline:hover {
+    background-color: #f9fafb;
+    border-color: #d1d5db;
+}
+
+.settings-toggle {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.settings-toggle:hover {
+    background-color: #f3f4f6;
+    color: #4f46e5;
+}
+
+.settings-panel {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease, opacity 0.5s ease;
+    opacity: 0;
+}
+
+.settings-panel.active {
+    max-height: 1000px;
+    opacity: 1;
+}
+
+.slider {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 8px;
+    border-radius: 4px;
+    background: #e5e7eb;
+    outline: none;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--primary-gradient);
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--primary-gradient);
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.strength-meter {
+    height: 8px;
+    border-radius: 4px;
+    margin: 8px 0;
+    position: relative;
+    background-color: #e5e7eb;
+    overflow: hidden;
+}
+
+.strength-meter::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0;
+    transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+.strength-meter.weak::before {
+    width: 25%;
+    background-color: var(--strength-weak);
+}
+
+.strength-meter.medium::before {
+    width: 50%;
+    background-color: var(--strength-medium);
+}
+
+.strength-meter.strong::before {
+    width: 75%;
+    background-color: var(--strength-strong);
+}
+
+.strength-meter.very-strong::before {
+    width: 100%;
+    background-color: var(--strength-very-strong);
+}
+
+.strength-text {
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.strength-text.weak {
+    color: var(--strength-weak);
+}
+
+.strength-text.medium {
+    color: var(--strength-medium);
+}
+
+.strength-text.strong {
+    color: var(--strength-strong);
+}
+
+.strength-text.very-strong {
+    color: var(--strength-very-strong);
+}
+
+.copy-notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #10b981;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 50;
+}
+
+.copy-notification.show{
+    transform: translateY(0);
+    opacity: 1;
+}
