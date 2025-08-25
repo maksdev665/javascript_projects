@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Таймер обратного отсчёта</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-stone-100">
+    <div class="flex-grow flex items-center justify-center p4">
+        <div class="w-full max-w-md">
+            <div class="timer-card rounded-xl overflow-hidden">
+                <!-- Timer display -->
+                <div class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-6 text-white text-center">
+                    <h1 class="text-2xl font-bold mb-2">Таймер обратного отчёта</h1>
+                    <p class="text-indigo-100 text-sm">Установите время и нажмите Старт</p>
+                </div>
+
+                <div class="p-6">
+                    <!-- Ring Progress Bar -->
+                    <div class="flex justify-center items-center mb-6">
+                        <div class="relative w-128 h-128 flex items-center justify-center">
+                            <svg class="w-full h-full" viewBox="0 0 100 100">
+                                <!-- Background Circle -->
+                                <circle cx="50" cy="50" r="45" fill="none" stroke="#edf2f7" stroke-width="8"></circle>
+                                <!-- Progress Circle -->
+                                <circle 
+                                    id="progress-ring" 
+                                    cx="50" 
+                                    cy="50" 
+                                    r="45" 
+                                    fill="none" 
+                                    stroke="url(#gradient)" 
+                                    stroke-width="8" 
+                                    stroke-linecap="round"
+                                    stroke-dasharray="282.7"
+                                    stroke-dashoffset="0"
+                                    class="progress-ring">
+                                </circle>
+                                <!-- Gradient for progress -->
+                                <defs>
+                                    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                        <stop offset="0%" stop-color="#667eea" />
+                                        <stop offset="100%" stop-color="#764ba2" />
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+
+                            <!-- Time Display -->
+                            <div class="absolute flex justify-center items-center timer-display" id="time-display">
+                                <div class="input-timer-segment">
+                                    <input type="number" id="hours-input" class="time-input bg-transparent w-16 sm:w-20 text-center text-3xl sm:text-5xl font-bold text-gray-800 focus:outline-none" min="0" max="99" value="00">
+                                    <div class="timer-label text-center">часы</div>
+                                </div>
+                                <div class="input-timer-segment mx-6 sm:mx-8">
+                                    <input type="number" id="minutes-input" class="time-input bg-transparent w-16 sm:w-20 text-center text-3xl sm:text-5xl font-bold text-gray-800 focus:outline-none" min="0" max="59" value="00">
+                                    <div class="timer-label text-center">минуты</div>
+                                </div>
+                                <div class="input-timer-segment">
+                                    <input type="number" id="seconds-input" class="time-input bg-transparent w-16 sm:w-20 text-center text-3xl sm:text-5xl font-bold text-gray-800 focus:outline-none" min="0" max="59" value="00">
+                                    <div class="timer-label text-center">секунды</div>
+                                </div>
+                            </div>
+
+                            <!-- Countdown Display (hidden initialy) -->
+                            <div class="absolute flex justify-center items-center timer-display hidden" id="countdown-display">
+                                <div class="timer-segment">
+                                    <div class="w-16 sm:w-20 text-center text-3xl sm:text-5xl font-bold text-gray-800" id="hours">00</div>
+                                    <div class="timer-label text-center">часы</div>
+                                </div>
+                                <div class="timer-segment">
+                                    <div class="w-16 sm:w-20 text-center text-3xl sm:text-5xl font-bold text-gray-800" id="minutes">00</div>
+                                    <div class="timer-label text-center">минуты</div>
+                                </div>
+                                <div class="timer-segment">
+                                    <div class="w-16 sm:w-20 text-center text-3xl sm:text-5xl font-bold text-gray-800" id="seconds">00</div>
+                                    <div class="timer-label text-center">секунды</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Presets -->
+                    <div class="mb-6">
+                        <h3 class="text-sm font-semibold text-gray-500 mb-2">БЫСТРЫЕ НАСТРОЙКИ</h3>
+                        <div class="presets-container flex space-x-2 pb-2 overflow-x-auto">
+                            <button class="preset-btn flex-shrink-0 px-3 py-1 rounded-lg border border-gray-300 text-gray-600 text-sm" data-hours="0" data-minutes="1" data-seconds="0">1 минута</button>
+                            <button class="preset-btn flex-shrink-0 px-3 py-1 rounded-lg border border-gray-300 text-gray-600 text-sm" data-hours="0" data-minutes="3" data-seconds="0">3 минуты</button>
+                            <button class="preset-btn flex-shrink-0 px-3 py-1 rounded-lg border border-gray-300 text-gray-600 text-sm" data-hours="0" data-minutes="5" data-seconds="0">5 минут</button>
+                            <button class="preset-btn flex-shrink-0 px-3 py-1 rounded-lg border border-gray-300 text-gray-600 text-sm" data-hours="0" data-minutes="10" data-seconds="0">10 минут</button>
+                            <button class="preset-btn flex-shrink-0 px-3 py-1 rounded-lg border border-gray-300 text-gray-600 text-sm" data-hours="0" data-minutes="15" data-seconds="0">15 минут</button>
+                            <button class="preset-btn flex-shrink-0 px-3 py-1 rounded-lg border border-gray-300 text-gray-600 text-sm" data-hours="0" data-minutes="25" data-seconds="0">25 минут</button>
+                            <button class="preset-btn flex-shrink-0 px-3 py-1 rounded-lg border border-gray-300 text-gray-600 text-sm" data-hours="0" data-minutes="30" data-seconds="0">30 минут</button>
+                            <button class="preset-btn flex-shrink-0 px-3 py-1 rounded-lg border border-gray-300 text-gray-600 text-sm" data-hours="1" data-minutes="0" data-seconds="0">1 час</button>
+                        </div>
+                    </div>
+
+                    <!-- Controls -->
+                    <div class="flex space-x-3">
+                        <button id="start-btn" class="btn btn-primary flex-1 py-3 text-white font-semibold rounded-lg shadow-md focus:outline-none">Старт</button>
+                        <button id="pause-btn" class="btn btn-outline flex-1 py-3 text-gray-600 font-semibold rounded-lg shadow-md focus:outline-none hidden">Пауза</button>
+                        <button id="resume-btn" class="btn btn-outline flex-1 py-3 text-gray-600 font-semibold rounded-lg shadow-md focus:outline-none hidden">Продолжит</button>
+                        <button id="reset-btn" class="btn btn-outline flex-1 py-3 text-gray-600 font-semibold rounded-lg shadow-md focus:outline-none hidden">Сброс</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-6 text-gray-800 text-center text-sm">
+                <p>Таймер обратного отсчёта с уведомлением по окончании</p>
+            </div>
+        </div>
+    </div>
+    <!-- Sound for notification -->
+    <audio id="notification-sound" preload="auto">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-software-interface-alert-2573.mp3" type="audio/mpeg">
+    </audio>
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.timer-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.input-timer-segment,
+.timer-segment {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.timer-segment:not(:last-child)::after {
+    content: ':';
+    position: absolute;
+    right: -6px;
+    top: 30%;
+    transform: translateY(-50%);
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+.input-timer-segment:not(:last-child)::after {
+    content: ':';
+    position: absolute;
+    right: -15px;
+    top: 34%;
+    transform: translateY(-50%);
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+.progress-ring {
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+    transition: stroke-dashoffset 0.3s ease;
+}
+
+.presets-container {
+    scrollbar-width: thin;
+    scrollbar-color: #a0aec0 #edf2f7;
+}
+
+.preset-btn:hover {
+    background-color: #ebf4ff;
+    border-color: #667eea;
+    color: #667eea;
+}
+
+.preset-btn.active {
+    background-color: #ebf4ff;
+    border-color: #667eea;
+    color: #667eea;
+    font-weight: 600;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.animate-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.completion-animation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(102, 126, 234, 0.2);
+    z-index: 50;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+}
+
+@keyframes scale-up {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+    }
+    60% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1.5);
+        opacity: 0;
+    }
+}
+
+.completion-circle {
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(102, 126, 234, 0.8) 0%, rgba(118, 75, 162, 0.8) 100%);
+    border-radius: 50%;
+    animation: scale-up 1.5s ease-out forwards;
+}
+
+.btn {
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.btn-outline {
+    border: 2px solid #a0aec0;
+}
