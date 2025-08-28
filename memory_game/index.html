@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Card Game</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="min-h-screen font-sans p-4">
+    <div class="container mx-auto max-w-4xl">
+        <h1 class="text-3xl font-bold text-center mb-6">Memory Game</h1>
+
+        <!-- Game controls -->
+        <div class="bg-indigo-700/40 p-4 rounded-lg shadow-lg mb-6">
+            <div class="flex flex-wrap gap-4 justify-between items-center">
+                <!-- Game info -->
+                <div class="flex flex-wrap gap-4">
+                    <div class="bg-white rounded-lg px-4 py-2">
+                        <span>Время: <span id="timer" class="font-mono">00:00</span></span>
+                    </div>
+                    <div class="bg-white rounded-lg px-4 py-2">
+                        <span>Ходы: <span id="moves" class="font-mono">0</span></span>
+                    </div>
+                    <div class="bg-white rounded-lg px-4 py-2">
+                        <span>Счёт: <span id="score" class="font-mono">0</span></span>
+                    </div>
+                </div>
+
+                <!-- Controls -->
+                <div class="flex flex-wrap gap-4">
+                    <select id="difficulty" class="bg-blue-900 text-white rounded-md px-4 py-2 border border-blue-800 focus:outline-none">
+                        <option value="easy">Легкая (4x3)</option>
+                        <option value="medium" selected>Средняя (4x4)</option>
+                        <option value="hard">Сложная (6x4)</option>
+                        <option value="expert">Эксперт (6x6)</option>
+                    </select>
+
+                    <select id="theme" class="bg-blue-900 text-white rounded-md px-4 py-2 border border-blue-800 focus:outline-none">
+                        <option value="animals">Животные</option>
+                        <option value="food" selected>Еда</option>
+                        <option value="tech">Технологии</option>
+                        <option value="nature">Природа</option>
+                    </select>
+
+                    <button id="new-game-btn" class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 px-6 rounded-md transition-all transform hover:scale-105">Новая игра</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress bar -->
+        <div class="w-full bg-white rounded-full h-4 mb-6 overflow-hidden">
+            <div id="progress-bar" class="bg-green-500 h-4 rounded-full transition-all duration-500" style="width: 0"></div>
+        </div>
+
+        <!-- Game board -->
+        <div id="game-board" class="cards-grid medium mb-8"></div>
+
+        <!-- Best scores -->
+        <div class="bg-stone-100 p-4 rounded-lg shadow-lg mt-8">
+            <h2 class="text-xl font-bold mb-4">Лучшие результаты</h2>
+            <div class="grid grod-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-white p-3 rounded-lg shadow">
+                    <h3 class="text-sm font-semibold mb-1">Лучшее время</h3>
+                    <p id="best-time" class="text-lg font-mono">--:--</p>
+                </div>
+                <div class="bg-white p-3 rounded-lg shadow">
+                    <h3 class="text-sm font-semibold mb-1">Наименьшее кол-во ходов</h3>
+                    <p id="best-moves" class="text-lg font-mono">--</p>
+                </div>
+                <div class="bg-white p-3 rounded-lg shadow">
+                    <h3 class="text-sm font-semibold mb-1">Лучший счёт</h3>
+                    <p id="best-score" class="text-lg font-mono">--</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game complete modal -->
+    <div id="game-complete-modal" class="fixed inset-0 bg-gray-900/70 flex items-center justify-center z-50 hidden">
+        <div class="bg-gradient-to-br from-indigo-300 to-purple-300 rounded-lg p-6 w-full max-w-md m-4">
+            <h2 class="text-2xl font-bold mb-4 text-center">Поздравляем!</h2>
+            <p class="text-xl mb-4 text-center">Вы нашли все пары!</p>
+
+            <div class="mb-6 space-y-3">
+                <div class="flex justify-between">
+                    <span>Время:</span>
+                    <span id="result-time" class="font-mono"></span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Ходы:</span>
+                    <span id="result-moves" class="font-mono"></span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Счёт:</span>
+                    <span id="result-score" class="font-mono"></span>
+                </div>
+                <div class="flex justify-center mt-3 pt-3 border-t border-white border-opacity-20">
+                    <div id="stars-container" class="flex gap-1"></div>
+                </div>
+            </div>
+
+            <div class="flex justify-center gap-4">
+                <button id="play-again-btn" class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 px-6 rounded-md transition-all transform hover:scale-105">Играть снова</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
